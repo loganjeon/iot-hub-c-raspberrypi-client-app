@@ -4,6 +4,9 @@
 FROM raspbian/stretch:latest
 MAINTAINER Yeonggyoo.Jeon <yg.jeon@sk.com>
 
+# for arm build, copy the resulting qemu-arm-static binary to the building instance
+COPY qemu-aarch64-static /usr/bin
+
 # set bashrc
 RUN echo 'alias vi='vim'' >> $HOME/.bashrc
 
