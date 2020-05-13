@@ -250,6 +250,8 @@ void send_telemetry_data(const char *iotHubName, const char *event, const char *
         {
             snprintf(data, size, BODY_TEMPLATE_FULL, LANGUAGE, DEVICE, MCU, message, hash_mac, hash_iothub_name,
                 platform.sysname, os_platform + platform_str_offset, os_release, event, cur_time, EVENT, IKEY);
+//            snprintf(data, size, BODY_TEMPLATE_FULL, LANGUAGE, DEVICE, MCU, message, hash_mac, hash_iothub_name,
+//                platform.sysname, os_release, event, cur_time, EVENT, IKEY);
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
             // hide curl output
             FILE *devnull = fopen("/dev/null", "w+");

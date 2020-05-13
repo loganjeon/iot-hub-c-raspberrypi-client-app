@@ -17,7 +17,7 @@
 #include <jsondecoder.h>
 #include <pthread.h>
 #include "./config.h"
-#include "./wiring.h"
+//#include "./wiring.h"
 #include "./telemetry.h"
 
 const char *onSuccess = "\"Successfully invoke device method\"";
@@ -37,7 +37,7 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void *userCon
 {
     if (IOTHUB_CLIENT_CONFIRMATION_OK == result)
     {
-        blinkLED();
+//        blinkLED();
     }
     else
     {
@@ -316,6 +316,20 @@ void *send_telemetry_data_multi_thread(char *iotHubName, const char *eventName, 
     }
 }
 
+#define TEMPERATURE_ALERT 30
+
+int readMessage(int messageId, char *payload)
+{
+    float temperature = random(20, 30);
+    snprintf(payload,
+             BUFFER_SIZE,
+             "{ \"deviceId\": \"Raspberry Pi - C\", \"messageId\": %d, \"temperature\": %f, \"humidity\": %f }",
+             messageId,
+             temperature,
+             random(60, 80));
+    return (temperature > TEMPERATURE_ALERT) ? 1 : 0;
+}
+
 int main(int argc, char *argv[])
 {
     initial_telemetry();
@@ -326,7 +340,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    setupWiring();
+    //setupWiring();
 
     char device_id[257];
     char *device_id_src = get_device_id(argv[1]);
@@ -396,7 +410,8 @@ int main(int argc, char *argv[])
                             LogError("Failed to read message");
                         }
                     }
-                    delay(interval);
+                    //delay(interval);
+					sleep(interval);
                 }
                 IoTHubClient_LL_DoWork(iotHubClientHandle);
             }
